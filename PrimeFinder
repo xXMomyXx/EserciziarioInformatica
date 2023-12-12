@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-class PrimeFinder {
+class HelloWorld {
   public static void main(String[] args) {
     int num, x = 1, contatore = 0, somma = 0;
     Scanner sc = new Scanner(System.in);
@@ -8,7 +8,7 @@ class PrimeFinder {
     System.out.println("Inserisci il numero di primi da stampare");
     num = sc.nextInt();
     while (num <= 0) {
-      System.out.println("Il numero inserito non e' negativo o nullo.\nReinserire");
+      System.out.println("Il numero inserito non può essere negativo o nullo.\nReinserire");
       num = sc.nextInt();
     }
 
