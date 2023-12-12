@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-class HelloWorld {
+class PrimeFinder {
   public static void main(String[] args) {
     int num, x = 1, contatore = 0, somma = 0;
     Scanner sc = new Scanner(System.in);
