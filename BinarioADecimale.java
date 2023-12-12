@@ -1,3 +1,5 @@
+//Da rimuovere while loop e tenere solo for usando un boolean per uscire
+
 import java.util.Scanner;
 
 public class Main {
