@@ -1,7 +1,7 @@
 import java.util.Scanner;
 import java.util.Random;
 
-public class Main {
+public class GeneratoreNumeri {
     public static void main(String[] args) {
 
         Scanner tastiera = new Scanner(System.in);
