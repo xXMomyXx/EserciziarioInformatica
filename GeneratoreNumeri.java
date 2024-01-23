@@ -2,6 +2,9 @@ import java.util.Scanner;
 import java.util.Random;
 
 public class GeneratoreNumeri {
+    static boolean[] booleans = new boolean[101];
+    static int[] vettore;
+
     public static void main(String[] args) {
 
         Scanner tastiera = new Scanner(System.in);
@@ -16,7 +19,6 @@ public class GeneratoreNumeri {
             System.out.println("seleziona un'opzione");
             opzioni = tastiera.nextInt();
             switch (opzioni) {
-
                 case 1:
                     System.out.println(" quanti numeri vuoi generare?");
                     quantiNumeri = tastiera.nextInt();
@@ -47,6 +49,10 @@ public class GeneratoreNumeri {
                     else System.out.println("non è stato creato il vettore");
                     break;
                 case 5:
+                    System.out.println("Numeri presenti e non");
+                    visualizzaBoolean();
+                    break;
+                case 6:
                     System.out.println(" exit");
                     fine = false;
                     break;
@@ -66,7 +72,8 @@ public class GeneratoreNumeri {
         System.out.println("[2] visualizza numeri");
         System.out.println("[3] numeri pari");
         System.out.println("[4] visualizza pari");
-        System.out.println("[5] exit");
+        System.out.println("[5] visualizza numeri generati e non");
+        System.out.println("[6] exit");
     }
 
     private static void ClrScr() {
@@ -86,7 +93,7 @@ public class GeneratoreNumeri {
     }
 
     private static int[] numeriCasuali(int n) {
-        int[] vettore = new int[n];
+        vettore = new int[n];
         Random rn = new Random();
         for (int i = 0; i < n; i++) {
             int casuale;
@@ -103,6 +110,9 @@ public class GeneratoreNumeri {
             } while (duplicate);
             vettore[i] = casuale;
         }
+        for (int i = 0; i < vettore.length; i++) {
+            booleans[vettore[i]] = true;
+        }
         return vettore;
     }
 
@@ -110,6 +120,19 @@ public class GeneratoreNumeri {
         for (int i = 0; i < v.length; i++) {
             System.out.println(i + "=" + v[i]);
         }
+    }
 
+    private static void visualizzaBoolean() {
+        if (vettore != null) {
+            for (int i = 0; i < booleans.length; i++) {
+                if (booleans[i]) {
+                    System.out.println("Il numero " + i + " è stato generato");
+                } else {
+                    System.out.println("Il numero " + i + " non è stato generato");
+                }
+            }
+        } else {
+            System.out.println("Non sono stati generati numeri");
+        }
     }
 }
