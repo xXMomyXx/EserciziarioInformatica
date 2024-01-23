@@ -86,17 +86,22 @@ public class GeneratoreNumeri {
     }
 
     private static int[] numeriCasuali(int n) {
-        int casuale;
         int[] vettore = new int[n];
         Random rn = new Random();
         for (int i = 0; i < n; i++) {
-            casuale = rn.nextInt(1, 101);
-            for (int j = 0; j < n; j++) {
-                if (vettore[j] != casuale) {
-                    vettore[i] = casuale;
-                    break;
+            int casuale;
+            boolean duplicate;
+            do {
+                casuale = rn.nextInt(1, 101);
+                duplicate = false;
+                for (int j = 0; j < i; j++) {
+                    if (vettore[j] == casuale) {
+                        duplicate = true;
+                        break;
+                    }
                 }
-            }
+            } while (duplicate);
+            vettore[i] = casuale;
         }
         return vettore;
     }
