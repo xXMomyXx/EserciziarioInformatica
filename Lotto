@@ -3,29 +3,63 @@ import java.util.Random;
 
 
 public class Main {
-    static int[] array;
+    static int[] estrazioni;
 
     public static void main(String[] args) {
-        String[] opzioni = {"Estrazioni lotto", "[1] Ruota Venezia", "[2] Visualizza", "[3] Exit"};
+        String[] opzioni = {"Estrazioni lotto", "[1] Ruota Venezia", "[2] Visualizza", "[3] Visualizza vincita", "[4] Exit"};
 // Ruota Venezia: Estrarre 5 numeri casuali nel range 1-90
 // Visualizza: Visualizzare i valori estratti
 // Impostare le opzioni del menù in relazione alle opzioni
         Scanner sc = new Scanner(System.in);
         boolean attivo = true;
+        int[] supposizioni = new int[5];
+        int contatore = 0;
+        System.out.println("Inserisci i 5 numeri del lotto da indovinare");
+        for (int i = 0; i < supposizioni.length; i++) {
+            supposizioni[i] = sc.nextInt();
+            while (supposizioni[i] > 90 || supposizioni[i] < 1) {
+                System.out.println("I numeri devono essere tra 1 e 90! Reinserire");
+                supposizioni[i] = sc.nextInt();
+            }
+            for (int j = 0; j < supposizioni.length; j++) {
+                if (j == i) {
+                    break;
+                }
+                while (supposizioni[j] == supposizioni[i]) {
+                    System.out.println("Hai già inserito questo numero! Reinserire");
+                    supposizioni[i] = sc.nextInt();
+                }
+            }
+        }
         do {
             switch (mnu(opzioni, sc)) {
                 case 1:
                     System.out.println("Estrazione fatta");
                     Random rn = new Random();
-                    array = new int[5];
-                    for (int i = 0; i < array.length; i++) {
-                        array[i] = rn.nextInt(1, 91);
+                    estrazioni = new int[5];
+                    for (int i = 0; i < estrazioni.length; i++) {
+                        estrazioni[i] = rn.nextInt(1, 91);
+                        for (int j = 0; j < estrazioni.length; j++) {
+                            if (j == i) {
+                                break;
+                            }
+                            while (estrazioni[j] == estrazioni[i]) {
+                                estrazioni[i] = rn.nextInt(1, 91);
+                            }
+                        }
+                    }
+                    for (int e : estrazioni) {
+                        for (int g : supposizioni) {
+                            if (e == g) {
+                                contatore++;
+                                break;
+                            }
+                        }
                     }
                     break;
                 case 2:
-                    if (array != null) {
-                        System.out.println("Numeri generati");
-                        for (int i : array) {
+                    if (estrazioni != null) {
+                        for (int i : estrazioni) {
                             System.out.println(i);
                         }
                     } else {
@@ -33,6 +67,32 @@ public class Main {
                     }
                     break;
                 case 3:
+                    System.out.println("Visualizza vincita");
+                    if (estrazioni != null) {
+                        switch (contatore) {
+                            case (1):
+                                System.out.println("Hai fatto ambata!");
+                                break;
+                            case (2):
+                                System.out.println("Hai fatto ambo!");
+                                break;
+                            case (3):
+                                System.out.println("Hai fatto terna!");
+                                break;
+                            case (4):
+                                System.out.println("Hai fatto quaterna!");
+                                break;
+                            case (5):
+                                System.out.println("Hai fatto cinquina!");
+                                break;
+                            default:
+                                System.out.println("Non hai indovinato");
+                        }
+                    } else {
+                        System.out.println("Numeri non generati");
+                    }
+                    break;
+                case 4:
                     System.out.println("Exit");
                     attivo = false;
                     break;
