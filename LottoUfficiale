@@ -1,0 +1,145 @@
+import java.util.Scanner;
+import java.util.Random;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        Random rn = new Random();
+        int ruota = scegliQuanteRuote(sc);
+        int ruotaScelta = (ruota == 1) ? scegliRuota(sc) : 0;
+        int quantiNum = scegliQuantiNumeri(sc);
+        int tipoScommessa = scegliTipoScommessa(sc, quantiNum);
+        int[] num = inserisciNumeri(sc, quantiNum);
+        int[] casuali = (ruota == 1) ? generazioneUnica(rn) : generazioneTotale(rn);
+        int[] corrispondenze = controlloVincita(casuali, num);
+        for (int i : corrispondenze) {
+            System.out.println(i);
+        }
+    }
+
+    //Metodo per scegliere su quante ruote si vuole scommettere (Permette solo 1 di 11 ruote o tutte le ruote (10, la ruota nazionale è esclusa))
+    private static int scegliQuanteRuote(Scanner sc) {
+        System.out.println("Vuoi puntare su una o su tutte le ruote?\n1.Una ruota\n2.Tutte le ruote");
+        int ruota = sc.nextInt();
+        while (ruota != 1 && ruota != 2) {
+            System.out.println("Puoi scegliere solo 1 o 2! Reinserire");
+            ruota = sc.nextInt();
+        }
+        return ruota;
+    }
+
+    //Metodo per scegliere su quale ruota puntare, eseguito solo se si sceglie una sola ruota
+    private static int scegliRuota(Scanner sc) {
+        System.out.println("Su quale ruota vuoi puntare?");
+        System.out.println("1.Bari\n2.Cagliari\n3.Firenze\n4.Genova\n5.Milano\n6.Napoli\n7.Palermo\n8.Roma\n9.Torino\n10.Venezia\n11.Ruota nazionale");
+        int ruotaScelta = sc.nextInt();
+        while (ruotaScelta <= 0 || ruotaScelta > 11) {
+            System.out.println("Non hai scelto una delle opzioni disponibili! Reinserire");
+            ruotaScelta = sc.nextInt();
+        }
+        return ruotaScelta;
+    }
+
+    //Metodo per scegliere su quanti numeri si voglia puntare
+    private static int scegliQuantiNumeri(Scanner sc) {
+        System.out.println("Su quanti numeri vuoi puntare? Puoi puntare da 1 a 5 numeri");
+        int quantiNum = sc.nextInt();
+        while (quantiNum < 1 || quantiNum > 5) {
+            System.out.println("Puoi puntare solo da 1 a 5 numeri! Reinserire");
+            quantiNum = sc.nextInt();
+        }
+        return quantiNum;
+    }
+
+    //Metodo per scegliere su che tipo di vincita si voglia puntare
+    private static int scegliTipoScommessa(Scanner sc, int quantiNum) {
+        System.out.println("Su cosa vuoi puntare?");
+        System.out.println("1.Singolo\n2.Ambo\n3.Terno\n4.Quaterna\n5.Cinquina");
+        int tipoScommessa = sc.nextInt();
+        while (tipoScommessa < 1 || tipoScommessa > 5 || quantiNum < tipoScommessa) {
+            switch (tipoScommessa) {
+                case 5:
+                    System.out.println("Non puoi puntare sulla cinquina senza aver pescato almeno 5 numeri! Punta su un'altra opzione");
+                    break;
+                case 4:
+                    System.out.println("Non puoi puntare sulla quaterna senza aver pescato almeno 4 numeri! Punta su un'altra opzione");
+                    break;
+                case 3:
+                    System.out.println("Non puoi puntare sul terno senza aver pescato almeno 3 numeri! Punta su un'altra opzione");
+                    break;
+                case 2:
+                    System.out.println("Non puoi puntare sull'ambo senza aver pescato almeno 2 numeri! Punta su un'altra opzione");
+                    break;
+                default:
+                    System.out.println("Non hai scelto una delle opzioni disponibili! Reinserire");
+            }
+            tipoScommessa = sc.nextInt();
+        }
+        return tipoScommessa;
+    }
+
+    //Metodo per l'inserimento dei numeri su cui vuole scommettere l'utente
+    private static int[] inserisciNumeri(Scanner sc, int quantiNum) {
+        int[] num = new int[quantiNum];
+        for (int i = 0; i < quantiNum; i++) {
+            System.out.println("Inserire il " + (i + 1) + "° numero");
+            num[i] = sc.nextInt();
+            while (num[i] < 1 || num[i] > 90) {
+                System.out.println("Puoi inserire solo numeri tra 1 e 90! Reinserire");
+                num[i] = sc.nextInt();
+            }
+            for (int j = 0; j < i; j++) {
+                while (num[i] == num[j]) {
+                    System.out.println("Hai già inserito questo numero! Reinserire");
+                    num[i] = sc.nextInt();
+                }
+            }
+        }
+        return num;
+    }
+
+    //Metodo per generare 5 numeri per una ruota sola
+    private static int[] generazioneUnica(Random rn) {
+        int[] casuali = new int[5];
+        for (int i = 0; i < casuali.length; i++) {
+            casuali[i] = rn.nextInt(0, 90) + 1;
+            for (int j = 0; j < i; j++) {
+                while (casuali[i] == casuali[j]) {
+                    casuali[i] = rn.nextInt(0, 90) + 1;
+                }
+            }
+        }
+        return casuali;
+    }
+
+    //Metodo per generare i numeri per le 10 ruote
+    private static int[] generazioneTotale(Random rn) {
+        int[] numeriCasuali = new int[50];
+        for (int i = 0; i < numeriCasuali.length; i++) {
+            numeriCasuali[i] = rn.nextInt(0, 90) + 1;
+            for (int j = 0; j < i; j++) {
+                while (numeriCasuali[i] == numeriCasuali[j]) {
+                    numeriCasuali[i] = rn.nextInt(0, 90) + 1;
+                }
+            }
+        }
+        return numeriCasuali;
+    }
+
+    //Metodo per controllare la vincita e incrementare l'indice dell'array in base a quante volte corrisponde ciascun numero
+    private static int[] controlloVincita(int[] casuali, int[] num) {
+        int[] corrispondenze = new int[5];
+        for (int i = 0; i < num.length; i++) {
+            for (int j : casuali) {
+                if (j == num[i]) {
+                    corrispondenze[i]++;
+                }
+            }
+        }
+        return corrispondenze;
+    }
+
+    private static void mostraVincita(int[] corrispondenze) {
+
+    }
+}
