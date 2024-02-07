@@ -1,0 +1,28 @@
+public class Main {
+    public static void main(String[] args) {
+        String[] parole = {"America", "spagna", "Marocco", "italia"};
+        System.out.println("Le parole con la maiuscola sono: ");
+        String[] paroleMaiuscole = togliMinuscole(parole);
+        for (String s : paroleMaiuscole) {
+            System.out.println(s);
+        }
+    }
+
+    public static String[] togliMinuscole(String[] parole) {
+        int contatore = 0;
+        for (String s : parole) {
+            if (s.charAt(0) >= 'A' && s.charAt(0) <= 'Z') {
+                contatore++;
+            }
+        }
+        String[] paroleMaiuscole = new String[contatore];
+        contatore = 0;
+        for (String s : parole) {
+            if (s.charAt(0) >= 'A' && s.charAt(0) <= 'Z') {
+                paroleMaiuscole[contatore] = s;
+                contatore++;
+            }
+        }
+        return paroleMaiuscole;
+    }
+}
