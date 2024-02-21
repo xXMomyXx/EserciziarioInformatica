@@ -10,11 +10,12 @@ public class Main {
         int quantiNum = scegliQuantiNumeri(sc);
         int tipoScommessa = scegliTipoScommessa(sc, quantiNum);
         int[] num = inserisciNumeri(sc, quantiNum);
+        double scommessa = scegliQuantoScommettere(sc);
         int[] casuali = (ruota == 1) ? generazioneUnica(rn) : generazioneTotale(rn);
-        int[] corrispondenze = controlloVincita(casuali, num);
-        for (int i : corrispondenze) {
-            System.out.println(i);
-        }
+        int[] corrispondenze = controlloCorrispondenze(casuali, num);
+        int[] vincite = AssegnaVincita(corrispondenze, tipoScommessa);
+        DichiaraVincita(vincite);
+        DenaroVinto(ruota, quantiNum, scommessa, corrispondenze, tipoScommessa);
     }
 
     //Metodo per scegliere su quante ruote si vuole scommettere (Permette solo 1 di 11 ruote o tutte le ruote (10, la ruota nazionale è esclusa))
@@ -98,6 +99,18 @@ public class Main {
         return num;
     }
 
+    //Metodo per l'inserimento di quanto denaro si voglia scommettere
+    private static double scegliQuantoScommettere(Scanner sc) {
+        double scommessa;
+        System.out.println("Quanto vuoi scommettere? Puoi scommettere un minimo di 1 euro e un massimo di 200.");
+        scommessa = sc.nextInt();
+        while (scommessa < 1 || scommessa > 200) {
+            System.out.println("Puoi scommettere solo da 1 a 200 euro! Reinserire");
+            scommessa = sc.nextInt();
+        }
+        return scommessa;
+    }
+
     //Metodo per generare 5 numeri per una ruota sola
     private static int[] generazioneUnica(Random rn) {
         int[] casuali = new int[5];
@@ -127,7 +140,7 @@ public class Main {
     }
 
     //Metodo per controllare la vincita e incrementare l'indice dell'array in base a quante volte corrisponde ciascun numero
-    private static int[] controlloVincita(int[] casuali, int[] num) {
+    private static int[] controlloCorrispondenze(int[] casuali, int[] num) {
         int[] corrispondenze = new int[5];
         for (int i = 0; i < num.length; i++) {
             for (int j : casuali) {
@@ -139,7 +152,189 @@ public class Main {
         return corrispondenze;
     }
 
-    private static void mostraVincita(int[] corrispondenze) {
+    //Metodo per calcolare e assegnare all'utente la vincita (se ha vinto)
+    private static int[] AssegnaVincita(int[] corrispondenze, int tipoScommessa) {
+        int[] tipoVincite = new int[5];
+        for (int i = 0; i < corrispondenze.length; i++) {
+            if (corrispondenze[i] > 0 && tipoScommessa == i + 1) {
+                tipoVincite[i]++;
+            }
+        }
+        boolean tuttiMaggioriDiZero = true;
+        for (int j : corrispondenze) {
+            if (j == 0) {
+                tuttiMaggioriDiZero = false;
+                break;
+            }
+        }
+        if (tuttiMaggioriDiZero && tipoScommessa == 5) {
+            tipoVincite[4]++;
+        }
 
+        return tipoVincite;
+    }
+
+    //Metodo per dichiarare la vincita che l'utente ha fatto
+    private static void DichiaraVincita(int[] vincite) {
+        if (vincite[0] > 0) {
+            System.out.println("Hai fatto Singolo!");
+        } else if (vincite[1] > 0) {
+            System.out.println("Hai fatto Ambo!");
+        } else if (vincite[2] > 0) {
+            System.out.println("Hai fatto terna!");
+        } else if (vincite[3] > 0) {
+            System.out.println("Hai fatto quaterna!");
+        } else if (vincite[4] > 0) {
+            System.out.println("Hai fatto cinquina!");
+        } else {
+            System.out.println("Non hai vinto");
+        }
+    }
+
+    //Metodo per dichiarare la vincita dell'utente in euro
+    private static void DenaroVinto(int ruota, int quantiNum, double scommessa, int[] corrispondenze, int tipoScommessa) {
+        double vincitaSingolo = 0, vincitaAmbo = 0, vincitaTerno = 0, vincitaQuaterna = 0, vincitaCinquina = 0, vincitaTotale = 0;
+        if (ruota == 1) {
+            switch (quantiNum) {
+                case 1:
+                    if (corrispondenze[0] > 0 && tipoScommessa == 1) {
+                        vincitaSingolo = (scommessa * 11.23) * corrispondenze[0];
+                    }
+                    break;
+                case 2:
+                    if (corrispondenze[0] > 0 && tipoScommessa == 1) {
+                        vincitaSingolo = (scommessa * 5.62) * corrispondenze[0];
+                    }
+                    if (corrispondenze[1] > 0 && tipoScommessa == 2) {
+                        vincitaAmbo = (scommessa * 250) * corrispondenze[1];
+                    }
+                    break;
+                case 3:
+                    if (corrispondenze[0] > 0 && tipoScommessa == 1) {
+                        vincitaSingolo = (scommessa * 3.74) * corrispondenze[0];
+                    }
+                    if (corrispondenze[1] > 0 && tipoScommessa == 2) {
+                        vincitaAmbo = (scommessa * 83.33) * corrispondenze[1];
+                    }
+                    if (corrispondenze[2] > 0 && tipoScommessa == 3) {
+                        vincitaTerno = (scommessa * 4500) * corrispondenze[2];
+                    }
+                    break;
+                case 4:
+                    if (corrispondenze[0] > 0 && tipoScommessa == 1) {
+                        vincitaSingolo = (scommessa * 2.81) * corrispondenze[0];
+                    }
+                    if (corrispondenze[1] > 0 && tipoScommessa == 2) {
+                        vincitaAmbo = (scommessa * 41.67) * corrispondenze[1];
+                    }
+                    if (corrispondenze[2] > 0 && tipoScommessa == 3) {
+                        vincitaTerno = (scommessa * 1125) * corrispondenze[2];
+                    }
+                    if (corrispondenze[3] > 0 && tipoScommessa == 4) {
+                        vincitaQuaterna = (scommessa * 120000) * corrispondenze[3];
+                    }
+                    break;
+                case 5:
+                    if (corrispondenze[0] > 0 && tipoScommessa == 1) {
+                        vincitaSingolo = (scommessa * 2.25) * corrispondenze[0];
+                    }
+                    if (corrispondenze[1] > 0 && tipoScommessa == 2) {
+                        vincitaAmbo = (scommessa * 25) * corrispondenze[1];
+                    }
+                    if (corrispondenze[2] > 0 && tipoScommessa == 3) {
+                        vincitaTerno = (scommessa * 450) * corrispondenze[2];
+                    }
+                    if (corrispondenze[3] > 0 && tipoScommessa == 4) {
+                        vincitaQuaterna = (scommessa * 24000) * corrispondenze[3];
+                    }
+                    if (corrispondenze[4] > 0 && tipoScommessa == 5) {
+                        vincitaCinquina = (scommessa * 6000000) * corrispondenze[4];
+                    }
+                    break;
+            }
+        } else if (ruota == 2) {
+            switch (quantiNum) {
+                case 1:
+                    if (corrispondenze[0] > 0 && tipoScommessa == 1) {
+                        vincitaSingolo = ((scommessa * 11.23) * corrispondenze[0]) / 10;
+                    }
+                    break;
+                case 2:
+                    if (corrispondenze[0] > 0 && tipoScommessa == 1) {
+                        vincitaSingolo = ((scommessa * 5.62) * corrispondenze[0]) / 10;
+                    }
+                    if (corrispondenze[1] > 0 && tipoScommessa == 2) {
+                        vincitaAmbo = ((scommessa * 250) * corrispondenze[1]) / 10;
+                    }
+                    break;
+                case 3:
+                    if (corrispondenze[0] > 0 && tipoScommessa == 1) {
+                        vincitaSingolo = ((scommessa * 3.74) * corrispondenze[0]) / 10;
+                    }
+                    if (corrispondenze[1] > 0 && tipoScommessa == 2) {
+                        vincitaAmbo = ((scommessa * 83.33) * corrispondenze[1]) / 10;
+                    }
+                    if (corrispondenze[2] > 0 && tipoScommessa == 3) {
+                        vincitaTerno = ((scommessa * 4500) * corrispondenze[2]) / 10;
+                    }
+                    break;
+                case 4:
+                    if (corrispondenze[0] > 0 && tipoScommessa == 1) {
+                        vincitaSingolo = ((scommessa * 2.81) * corrispondenze[0]) / 10;
+                    }
+                    if (corrispondenze[1] > 0 && tipoScommessa == 2) {
+                        vincitaAmbo = ((scommessa * 41.67) * corrispondenze[1]) / 10;
+                    }
+                    if (corrispondenze[2] > 0 && tipoScommessa == 3) {
+                        vincitaTerno = ((scommessa * 1125) * corrispondenze[2]) / 10;
+                    }
+                    if (corrispondenze[3] > 0 && tipoScommessa == 4) {
+                        vincitaQuaterna = ((scommessa * 120000) * corrispondenze[3]) / 10;
+                    }
+                    break;
+                case 5:
+                    if (corrispondenze[0] > 0 && tipoScommessa == 1) {
+                        vincitaSingolo = ((scommessa * 2.25) * corrispondenze[0]) / 10;
+                    }
+                    if (corrispondenze[1] > 0 && tipoScommessa == 2) {
+                        vincitaAmbo = ((scommessa * 25) * corrispondenze[1]) / 10;
+                    }
+                    if (corrispondenze[2] > 0 && tipoScommessa == 3) {
+                        vincitaTerno = ((scommessa * 450) * corrispondenze[2]) / 10;
+                    }
+                    if (corrispondenze[3] > 0 && tipoScommessa == 4) {
+                        vincitaQuaterna = ((scommessa * 24000) * corrispondenze[3]) / 10;
+                    }
+                    if (corrispondenze[4] > 0 && tipoScommessa == 5) {
+                        vincitaCinquina = ((scommessa * 6000000) * corrispondenze[4]) / 10;
+                    }
+                    break;
+            }
+        }
+        double[] vinciteInDenaro = {vincitaSingolo, vincitaAmbo, vincitaTerno, vincitaQuaterna, vincitaCinquina};
+
+        for (int i = 0; i < vinciteInDenaro.length; i++) {
+            if (vinciteInDenaro[i] > 0.0) {
+                switch (i) {
+                    case 0:
+                        System.out.printf("Hai vinto %.2f€ con il singolo!\n", vinciteInDenaro[i]);
+                        break;
+                    case 1:
+                        System.out.printf("Hai vinto %.2f€ con l'ambo!\n", vinciteInDenaro[i]);
+                        break;
+                    case 2:
+                        System.out.printf("Hai vinto %.2f€ con la terna!\n", vinciteInDenaro[i]);
+                        break;
+                    case 3:
+                        System.out.printf("Hai vinto %.2f€ con la quaterna!\n", vinciteInDenaro[i]);
+                        break;
+                    case 4:
+                        System.out.printf("Hai vinto %.2f€ con la cinquina!\n", vinciteInDenaro[i]);
+                        break;
+                }
+                vincitaTotale += vinciteInDenaro[i];
+            }
+        }
+        System.out.printf("La vincita totale è di %.2f€", vincitaTotale);
     }
 }
