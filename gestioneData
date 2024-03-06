@@ -1,0 +1,117 @@
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int data, scelta;
+        do {
+            System.out.println("Inserire la data in formato GGMMAAAA oppure GMMAAAA");
+            data = sc.nextInt();
+            while (!CtrlData(data, sc)) {
+                System.out.println("La data è invalida! Deve essere in formato GGMMAAAA oppure GMMAAAA. Reinserire");
+                data = sc.nextInt();
+            }
+            int[] elementiData = patternData(data);
+            if (dataOK(elementiData, sc)) {
+                System.out.println("Data valida\nData:");
+            }
+            for (int i = elementiData.length - 1; i >= 0; i--) {
+                System.out.print(elementiData[i] + " ");
+            }
+            System.out.println("\nVuoi controllare un'altra data? Inserire 1 per sì o qualsiasi altro valore per no");
+            scelta = sc.nextInt();
+        } while (scelta == 1);
+    }
+
+    public static boolean CtrlData(int data, Scanner sc) {
+        int lunghezza = 0;
+        while (data <= 0) {
+            System.out.println("La data deve essere un numero positivo! Reinserire");
+            data = sc.nextInt();
+        }
+        do {
+            data = data / 10;
+            lunghezza++;
+        } while (data > 0);
+        return lunghezza == 7 || lunghezza == 8;
+    }
+
+    public static int[] patternData(int data) {
+        int[] elementiData = new int[3];
+        elementiData[0] = data % 10000;
+        data = data / 10000;
+        elementiData[1] = data % 100;
+        data = data / 100;
+        elementiData[2] = data;
+        return elementiData;
+    }
+
+    public static boolean dataOK(int[] elementiData, Scanner sc) {
+        while (elementiData[0] <= 0 || elementiData[0] > 9999) {
+            System.out.println("L'anno inserito non è valido! Reinserire l'anno");
+            elementiData[0] = sc.nextInt();
+        }
+        while (elementiData[1] < 1 || elementiData[1] > 12) {
+            System.out.println("Il mese inserito non è valido! Reinserire il mese");
+            elementiData[1] = sc.nextInt();
+        }
+        while (elementiData[1] == 1 && (elementiData[2] < 1 || elementiData[2] > 31)) {
+            System.out.println("I giorni del mese di gennaio vanno dall'1 al 31! Reinserire il giorno");
+            elementiData[2] = sc.nextInt();
+        }
+        while (elementiData[1] == 2) {
+            while ((elementiData[2] < 1 || elementiData[2] > 28 && !(elementiData[0] % 4 == 0))) {
+                System.out.println("I giorni del mese di febbraio vanno dall'1 al 28! Reinserire il giorno");
+                elementiData[2] = sc.nextInt();
+            }
+            while (elementiData[2] < 1 || elementiData[2] > 29 && elementiData[0] % 4 == 0 || (elementiData[0] % 100 == 0 && elementiData[0] % 400 == 0)) {
+                System.out.println("I giorni del mese di febbraio in un anno bisestile vanno dall'1 al 29! Reinserire il giorno");
+                elementiData[2] = sc.nextInt();
+            }
+            if (elementiData[2] < 29) {
+                break;
+            }
+        }
+        while (elementiData[1] == 3 && (elementiData[2] < 1 || elementiData[2] > 31)) {
+            System.out.println("I giorni del mese di marzo vanno dall'1 al 31! Reinserire il giorno");
+            elementiData[2] = sc.nextInt();
+        }
+        while (elementiData[1] == 4 && (elementiData[2] < 1 || elementiData[2] > 30)) {
+            System.out.println("I giorni del mese di aprile vanno dall'1 al 30! Reinserire il giorno");
+            elementiData[2] = sc.nextInt();
+        }
+        while (elementiData[1] == 5 && (elementiData[2] < 1 || elementiData[2] > 31)) {
+            System.out.println("I giorni del mese di maggio vanno dall'1 al 31! Reinserire il giorno");
+            elementiData[2] = sc.nextInt();
+        }
+        while (elementiData[1] == 6 && (elementiData[2] < 1 || elementiData[2] > 30)) {
+            System.out.println("I giorni del mese di giugno vanno dall'1 al 30! Reinserire il giorno");
+            elementiData[2] = sc.nextInt();
+        }
+        while (elementiData[1] == 7 && (elementiData[2] < 1 || elementiData[2] > 31)) {
+            System.out.println("I giorni del mese di luglio vanno dall'1 al 31! Reinserire il giorno");
+            elementiData[2] = sc.nextInt();
+        }
+        while (elementiData[1] == 8 && (elementiData[2] < 1 || elementiData[2] > 31)) {
+            System.out.println("I giorni del mese di agosto vanno dall'1 al 31! Reinserire il giorno");
+            elementiData[2] = sc.nextInt();
+        }
+        while (elementiData[1] == 9 && (elementiData[2] < 1 || elementiData[2] > 30)) {
+            System.out.println("I giorni del mese di settembre vanno dall'1 al 30! Reinserire il giorno");
+            elementiData[2] = sc.nextInt();
+        }
+        while (elementiData[1] == 10 && (elementiData[2] < 1 || elementiData[2] > 31)) {
+            System.out.println("I giorni del mese di ottobre vanno dall'1 al 31! Reinserire il giorno");
+            elementiData[2] = sc.nextInt();
+        }
+        while (elementiData[1] == 11 && (elementiData[2] < 1 || elementiData[2] > 30)) {
+            System.out.println("I giorni del mese di novembre vanno dall'1 al 30! Reinserire il giorno");
+            elementiData[2] = sc.nextInt();
+        }
+        while (elementiData[1] == 12 && (elementiData[2] < 1 || elementiData[2] > 31)) {
+            System.out.println("I giorni del mese di dicembre vanno dall'1 al 31! Reinserire il giorno");
+            elementiData[2] = sc.nextInt();
+        }
+        return true;
+    }
+}
