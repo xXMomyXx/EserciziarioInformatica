@@ -1,0 +1,41 @@
+import java.util.Scanner;
+import static Utility.Tools.*;
+import java.util.Random;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        boolean fine = true;
+        final int MAXNUM = 10;
+        int[] vet = new int[MAXNUM];
+        String[] opzioni = {"MENU", "1-GENERA RANDOM", "2-VISUALIZZAZIONE ", "3-FINE"};
+
+        do {
+            switch (Menu(opzioni, sc)) {
+                case 1:
+                    System.out.println("generazione");
+                    generaNum2(vet);
+                    break;
+                case 2:
+                    System.out.println("visualizzazione");
+                    for (int j : vet) System.out.println(j);
+                    break;
+                case 3:
+                    fine = false;
+                    break;
+            }
+        } while (fine);
+    }
+
+    public static void generaNum2(int[] vet) {
+        Random rd = new Random();
+        for (int i = 0; i < vet.length; i++) {
+            vet[i] = rd.nextInt(0, vet.length) + 1;
+            for (int j = 0; j < i; j++) {
+                while (vet[j] == vet[i]) {
+                    vet[i] = rd.nextInt(0, vet.length) + 1;
+                }
+            }
+        }
+    }
+}
