@@ -1,26 +1,38 @@
 import java.util.Scanner;
+
 import static Utility.Tools.*;
+
 import java.util.Random;
 
 public class Main {
+    static boolean generato = false;
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         boolean fine = true;
-        final int MAXNUM = 10;
+        final int MAXNUM = 20;
         int[] vet = new int[MAXNUM];
-        String[] opzioni = {"MENU", "1-GENERA RANDOM", "2-VISUALIZZAZIONE ", "3-FINE"};
-
+        String[] opzioni = {"MENU", "1-GENERA RANDOM", "2-VISUALIZZAZIONE ", "3-RICERCA NUMERO", "4-FINE"};
         do {
             switch (Menu(opzioni, sc)) {
                 case 1:
                     System.out.println("generazione");
                     generaNum2(vet);
+                    generato = true;
                     break;
                 case 2:
                     System.out.println("visualizzazione");
-                    for (int j : vet) System.out.println(j);
+                    visualizzazione(vet);
                     break;
                 case 3:
+                    if (generato) {
+                        System.out.println("Che numero stai cercando?");
+                        trovaNumero(Integer.parseInt(sc.nextLine()), vet);
+                    } else {
+                        System.out.println("Non hai ancora generato alcun numero");
+                    }
+                    break;
+                case 4:
                     fine = false;
                     break;
             }
@@ -30,12 +42,37 @@ public class Main {
     public static void generaNum2(int[] vet) {
         Random rd = new Random();
         for (int i = 0; i < vet.length; i++) {
-            vet[i] = rd.nextInt(0, vet.length) + 1;
+            vet[i] = rd.nextInt(0, 10) + 1;
             for (int j = 0; j < i; j++) {
                 while (vet[j] == vet[i]) {
-                    vet[i] = rd.nextInt(0, vet.length) + 1;
+                    vet[i] = rd.nextInt(0, 10) + 1;
                 }
             }
+        }
+    }
+
+    public static void visualizzazione(int[] vet) {
+        int counter = 0;
+        for (int i : vet) {
+            counter++;
+            System.out.print(i + " ");
+            if (counter % 10 == 0) {
+                System.out.print("\n");
+            }
+        }
+    }
+
+    public static void trovaNumero(int num, int[] vet) {
+        boolean trovato = false;
+        for (int i = 0; i < vet.length; i++) {
+            if (vet[i] == num) {
+                System.out.println("Il numero scelto è presente e si trova all'indice " + i);
+                trovato = true;
+                break;
+            }
+        }
+        if (!trovato) {
+            System.out.println("Il numero che cerchi non è presente tra quelli generati");
         }
     }
 }
