@@ -4,7 +4,6 @@ Generare un valore contenente numeri casuali
 */
 import java.util.Scanner;
 import java.util.Random;
-
 public class Main {
     public static void main(String[] args) {
         Scanner tastiera = new Scanner(System.in);
@@ -80,7 +79,6 @@ public class Main {
             }
         } while (esci);
     }
-
     // int[] vettore;
     public static int[] generaNumeri(int nNumeri) {
         Random numeroRandom = new Random();
@@ -89,25 +87,21 @@ public class Main {
             nGenerati[i] = numeroRandom.nextInt(0, nNumeri) + 1;
         return nGenerati;
     }
-
     // int[] vettore = new int[MAXNUMERI];
     public static void generaNumeri4(int[] vettore) {
         Random numeroRandom = new Random();
         int numero; // numero da generare e inserire nel vettore
         int cont = 0; // verifica quanti numeri sono presenti senza ripetizioni
         boolean presente;
-
         do {
             numero = numeroRandom.nextInt(0, vettore.length) + 1;
             presente = false; // true se numero presente, false se no
-
             for (int i = 0; i < cont; i++) { // Controlla se il numero è già presente
                 if (vettore[i] == numero) {
                     presente = true;
                     break;
                 }
             }
-
             if (!presente) { // se presente = true, lo aggiungo al vettore
                 vettore[cont] = numero;
                 cont++;
@@ -123,7 +117,6 @@ public class Main {
     return vettore;
     }
     */
-
     public static void visualizza(int[] vettore) {
         int cont = 0;
         for (int i : vettore) {
@@ -136,7 +129,6 @@ public class Main {
             }
         }
     }
-
     public static int trovaNumero(int num, int[] vet) {
         for (int i = 0; i < vet.length; i++) {
             if (vet[i] == num) {
@@ -145,7 +137,6 @@ public class Main {
         }
         return -1;
     }
-
     public static int cancellaNumero(int numeroDaTrovare, int[] vet) {
         int numero = trovaNumero(numeroDaTrovare, vet);
         if (numero != -1) {
@@ -156,7 +147,6 @@ public class Main {
         }
         return numero;
     }
-
     public static int[] rimuoviNumeriPari(int[] vet, int counter) {
         int counter2 = 0;
         int[] arr = new int[vet.length - counter];
@@ -167,8 +157,18 @@ public class Main {
         }
         return arr;
     }
-
-    public static int[] raddoppiaVettore(int[] vet) {
+    public static int[] raddoppiaVettoreOrdinamento(int[] vet) {
+        for (int i = 0; i < vet.length - 1; i++) {  
+            int indice = i;  
+            for (int j = i + 1; j < vet.length; j++){  
+                if (vet[j] < vet[indice]){  
+                indice = j; 
+                }  
+            }  
+            int temp = vet[indice];   
+            vet[indice] = vet[i];  
+            vet[i] = temp;  
+        }
         int[] newArr = new int[vet.length * 2];
         for (int i = 0; i < vet.length; i++) {
             newArr[i] = vet[i];
