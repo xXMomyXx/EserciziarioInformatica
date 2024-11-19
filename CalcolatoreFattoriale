@@ -1,0 +1,21 @@
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        long num, risultato;
+        
+        System.out.println("Inserisci un numero per trovarne il fattoriale");
+        Scanner lettore = new Scanner (System.in);
+        num = lettore.nextLong();
+        
+        if (num == 0){
+            risultato = 1;
+        } else {
+            risultato = num * (num-1);
+            for (long i=num-2;i>0;i--) {
+                risultato = risultato * i;
+            }
+        }
+        System.out.println("Il risultato e': " + risultato);
+    }
+}

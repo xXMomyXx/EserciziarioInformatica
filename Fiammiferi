@@ -1,0 +1,76 @@
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String giocatore, giocatore1;
+        System.out.println("GIOCO DEI FIAMMIFERI\nSi possono prelevare dagli 1 ai 3 fiammiferi, vince chi preleva l'ultimo!");
+        //Inserimento nomi dei giocatori
+        System.out.println("Inserire il nome del primo giocatore");
+        giocatore = sc.nextLine();
+        System.out.println("Inserire il nome del secondo giocatore");
+        giocatore1 = sc.nextLine();
+        int fiammiferi = 21;
+        int giocatoreAttuale = 1;
+
+        /*
+        Ciclo che chiama il metodo 'TurnoFiammiferi' assegnando il valore ritornato (ovvero il numero di fiammiferi che
+        l'utente ha scelto di rimuovere) alla variabile 'fiammiferiRimossi' e che poi lo va a sottrarre da 'fiammiferi'
+        fino a raggiungere 0, e aver dunque finito i fiammiferi. Inoltre assegna il turno a ciascun giocatore.
+        */
+        do {
+            int fiammiferiRimossi = TurnoFiammiferi(sc, giocatoreAttuale, fiammiferi, giocatore, giocatore1);
+            fiammiferi -= fiammiferiRimossi;
+            if (giocatoreAttuale == 1) {
+                giocatoreAttuale = 2;
+            } else {
+                giocatoreAttuale = 1;
+            }
+        } while (fiammiferi > 0);
+
+        /*
+        Annuncio della vittoria con i partecipanti al contrario poiché il valore di 'giocatoreAttuale' nel ciclo soprastante
+        viene aggiornato comunque all'ultima esecuzione lasciando come 'giocatoreAttuale' quello che avrebbe dovuto giocare
+        il prossimo turno
+         */
+        if (giocatoreAttuale == 1) {
+            System.out.println("Il vincitore è " + giocatore1 + "!");
+        } else {
+            System.out.println("Il vincitore è " + giocatore + "!");
+        }
+        sc.close();
+    }
+
+    /**
+     * Metodo che permette agli utenti di giocare e visualizzare il numero attuale di fiammiferi
+     *
+     * @param sc               Scanner per leggere gli input
+     * @param giocatoreAttuale Indica chi dei due giocatori sta attualmente giocando il suo turno
+     * @param fiammiferi       Indica il numero attuale di fiammiferi che si hanno
+     * @param giocatore        Nome del primo giocatore
+     * @param giocatore1       Nome del secondo giocatore
+     * @return Il numero di fiammiferi che l'utente ha scelto di rimuovere
+     */
+    public static int TurnoFiammiferi(Scanner sc, int giocatoreAttuale, int fiammiferi, String giocatore, String giocatore1) {
+        if (giocatoreAttuale == 1) {
+            System.out.println("\nE' il turno di " + giocatore);
+        } else {
+            System.out.println("\nE' il turno di " + giocatore1);
+        }
+        System.out.println();
+        for (int i = 0; i < fiammiferi; i++) {
+            System.out.print("*" + " ");
+        }
+        System.out.println();
+        for (int i = 0; i < fiammiferi; i++) {
+            System.out.print("|" + " ");
+        }
+        System.out.println("\nQuanti fiammiferi vuoi togliere? MAX 3");
+        int fiammiferiRimossi = sc.nextInt();
+        while (fiammiferiRimossi > 3 || fiammiferiRimossi < 1) {
+            System.out.println("Puoi togliere dagli 1 ai 3 fiammiferi! Reinserire");
+            fiammiferiRimossi = sc.nextInt();
+        }
+        return fiammiferiRimossi;
+    }
+}

@@ -1,0 +1,25 @@
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        boolean x = InteramenteMaiuscolo(sc);
+        if (x) {
+            System.out.println("Tutti alfabetici");
+        } else {
+            System.out.println("Stringa errata");
+        }
+    }
+
+    public static boolean InteramenteMaiuscolo(Scanner sc) {
+        System.out.println("Inserisci la frase per controllare che tutti i caratteri siano maiuscoli");
+        String frase = sc.nextLine();
+        for (int i = 0; i < frase.length(); i++) {
+            char carattereAttuale = frase.charAt(i);
+            if (!(carattereAttuale >= 'A' && carattereAttuale <= 'Z') && !(carattereAttuale >= 'a' && carattereAttuale <= 'z')) {
+                return false;
+            }
+        }
+        return true;
+    }
+}

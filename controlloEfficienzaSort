@@ -1,0 +1,97 @@
+import java.util.Random;
+
+public class Main {
+    static long operazioniFatteS = 0;
+    static long operazioniFatteB = 0;
+
+    public static void main(String[] args) {
+        Random rn = new Random();
+        long[] dieci = new long[10];
+        long[] cento = new long[100];
+        long[] mille = new long[1000];
+        long[] diecimila = new long[10000];
+        long[] centomila = new long[100000];
+        long[] milione = new long[1000000];
+        popolaArray(dieci, rn);
+        popolaArray(cento, rn);
+        popolaArray(mille, rn);
+        popolaArray(diecimila, rn);
+        popolaArray(centomila, rn);
+        popolaArray(milione, rn);
+        selectionSort(dieci);
+        System.out.println("Il numero di operazioni fatte con selectionSort con un array di dieci elementi è: " + operazioniFatteS);
+        operazioniFatteS = 0;
+        bubbleSort(dieci);
+        System.out.println("Il numero di operazioni fatte con bubbleSort con un array di dieci di elementi è: " + operazioniFatteB);
+        operazioniFatteB = 0;
+        selectionSort(cento);
+        System.out.println("Il numero di operazioni fatte con selectionSort con un array di cento elementi è: " + operazioniFatteS);
+        operazioniFatteS = 0;
+        bubbleSort(cento);
+        System.out.println("Il numero di operazioni fatte con bubbleSort con un array di cento di elementi è: " + operazioniFatteB);
+        operazioniFatteB = 0;
+        selectionSort(mille);
+        System.out.println("Il numero di operazioni fatte con selectionSort con un array di mille elementi è: " + operazioniFatteS);
+        operazioniFatteS = 0;
+        bubbleSort(mille);
+        System.out.println("Il numero di operazioni fatte con bubbleSort con un array di mille di elementi è: " + operazioniFatteB);
+        operazioniFatteB = 0;
+        selectionSort(diecimila);
+        System.out.println("Il numero di operazioni fatte con selectionSort con un array di diecimila elementi è: " + operazioniFatteS);
+        operazioniFatteS = 0;
+        bubbleSort(diecimila);
+        System.out.println("Il numero di operazioni fatte con bubbleSort con un array di diecimila di elementi è: " + operazioniFatteB);
+        operazioniFatteB = 0;
+        selectionSort(centomila);
+        System.out.println("Il numero di operazioni fatte con selectionSort con un array di centomila elementi è: " + operazioniFatteS);
+        operazioniFatteS = 0;
+        bubbleSort(centomila);
+        System.out.println("Il numero di operazioni fatte con bubbleSort con un array di centomila di elementi è: " + operazioniFatteB);
+        operazioniFatteB = 0;
+        selectionSort(milione);
+        System.out.println("Il numero di operazioni fatte con selectionSort con un array di un milione di elementi è: " + operazioniFatteS);
+        bubbleSort(milione);
+        System.out.println("Il numero di operazioni fatte con bubbleSort con un array di un milione di elementi è: " + operazioniFatteB);
+    }
+
+    public static void selectionSort(long[] arr) {
+        int temp, indiceMin;
+        for (int i = 0; i < arr.length - 1; i++) {
+            indiceMin = i;
+            operazioniFatteS += 2;
+            for (int j = i + 1; j < arr.length; j++) {
+                operazioniFatteS += 2;
+                if (arr[j] < arr[indiceMin]) {
+                    indiceMin = j;
+                    operazioniFatteS++;
+                }
+            }
+            temp = (int) arr[indiceMin];
+            arr[indiceMin] = arr[i];
+            arr[i] = temp;
+            operazioniFatteS += 3;
+        }
+    }
+
+    public static void bubbleSort(long[] arr) {
+        int temp;
+        for (int i = 0; i < arr.length - 1; i++) {
+            operazioniFatteB++;
+            for (int j = i + 1; j < arr.length; j++) {
+                operazioniFatteB += 2;
+                if (arr[j] < arr[i]) {
+                    temp = (int) arr[j];
+                    arr[j] = arr[i];
+                    arr[i] = temp;
+                    operazioniFatteB += 3;
+                }
+            }
+        }
+    }
+
+    public static void popolaArray(long[] arr, Random rn) {
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = rn.nextInt(1, 300000000);
+        }
+    }
+}

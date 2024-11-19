@@ -1,0 +1,27 @@
+import java.util.Scanner;
+
+public class Main{
+    public static void main(String[] args){
+        long a,b,c,delta;
+        double x1,x2;
+        Scanner lettore = new Scanner (System.in);
+        System.out.println("Inserisci A");
+        a = lettore.nextLong();
+        System.out.println("Inserisci B");
+        b = lettore.nextLong();
+        System.out.println("Inserisci C");
+        c = lettore.nextLong();
+        
+        delta = (long) Math.pow(b,2) - 4*a*c;
+        x1 = Math.floor((-b + Math.sqrt(delta))/(2*a)*100) / 100;
+        x2 = Math.floor((-b - Math.sqrt(delta))/(2*a)*100) / 100;
+        
+        if(x1==x2){
+            System.out.println("Il delta e': " + delta);
+            System.out.println("X e': " + x1);
+        } else{
+                System.out.println("Il delta e': " + delta);
+                System.out.println("X1 e': " + x1 + "\nX2 e: " + x2);
+        }
+    }
+}
