@@ -2,10 +2,8 @@ public class Frazione {
     private int numeratore, denominatore;
 
     public Frazione(int numeratore, int denominatore) throws Exception {
-        if (denominatore == 0)
-            throw new Exception("Lo zero non è un valore valido come denominatore.");
         this.numeratore = numeratore;
-        this.denominatore = denominatore;
+        setDenominatore(denominatore);
     }
 
     public Frazione(String numeratore, String denominatore) throws Exception {
@@ -24,7 +22,9 @@ public class Frazione {
         return denominatore;
     }
 
-    public void setDenominatore(int denominatore) {
+    public void setDenominatore(int denominatore) throws Exception {
+        if (denominatore == 0)
+            throw new Exception("Lo zero non è un valore valido come denominatore.");
         this.denominatore = denominatore;
     }
 
@@ -32,6 +32,14 @@ public class Frazione {
         int denominatore1 = getDenominatore(), denominatore2 = f1.getDenominatore();
         int numeratore1 = getNumeratore() * denominatore2, numeratore2 = f1.getNumeratore() * denominatore1;
         int numeratore = numeratore1 + numeratore2, denominatore = denominatore1 * denominatore2;
+        int oggettoRicerca = Math.min(numeratore, denominatore);
+        for (int i = oggettoRicerca; i >= 2; i--) { //Riduzione ai minimi termini
+            if (numeratore % i == 0 && denominatore % i == 0) {
+                numeratore /= i;
+                denominatore /= i;
+                break;
+            }
+        }
         return new Frazione(numeratore, denominatore);
     }
 
