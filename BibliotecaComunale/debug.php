@@ -21,7 +21,7 @@ $query = "INSERT INTO lettori (nome, cognome, data_iscrizione, password) values 
 try{
     $stmt = $db->prepare($query);
     $stmt->bindValue(":nome",$nome);
-    $stmt->bindValue(":cognome",$nome);
+    $stmt->bindValue(":cognome",$cognome);
     $stmt->bindValue(":password",$pwd);
     $stmt->execute();
     echo "Successful insert";
