@@ -1,23 +1,62 @@
 <?php
-    $nome = isset($_POST['nome']) ? $_POST['nome'] : null;
-    $cognome = isset($_POST['cognome']) ? $_POST['cognome'] : null;
-    if ($nome && $cognome) {
-        //Utilizziamo un file di testo per tenere conto del numero degli utenti registrati
-        $counter = file_get_contents("counter.txt");
-        $counter++;
-        date_default_timezone_set("Europe/Rome");
-        $date = date("d-m-Y H:i:s");
-        //Utilizziamo un file di testo per salvare i dati degli utenti
-        file_put_contents("userInfo.txt", "Nome: ".$nome."\n".
-                "Cognome: ".$cognome."\n"."Numero: ".$counter."\n"."Data registrazione: ".$date."\n", FILE_APPEND);
-        file_put_contents("counter.txt", $counter);
-        // Rimando l'utente sulla pagina stessa nuovamente al fine di svuotare i dati in POST ed evitare che ricaricando
-        // la pagina possano essere immessi nuovamente i medesimi dati
-        header("Location: ".$_SERVER['PHP_SELF']);
-        exit();
+$nome = trim($_POST["nome"] ?? '');
+$cognome = trim($_POST["cognome"] ?? '');
+$basePwd = $_POST["pwd"] ?? '';
+
+if ($nome === '' || $cognome === '' || $basePwd === '') {
+    die("Tutti i campi sono obbligatori.");
+}
+$pwd = password_hash($basePwd,PASSWORD_DEFAULT);
+
+$db = new PDO
+("mysql:host=192.168.60.144;dbname=mohamed_guezam_lettori;charset=utf8mb4",
+    "mohamed_guezam",
+    "faciliterò.attui.",
+    [PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+);
+
+$query = "INSERT INTO lettori (nome, cognome, data_iscrizione, password) values (:nome, :cognome, now(), :password)";
+
+try{
+    $stmt = $db->prepare($query);
+    $stmt->bindValue(":nome",$nome);
+    $stmt->bindValue(":cognome",$nome);
+    $stmt->bindValue(":password",$pwd);
+    $stmt->execute();
+    echo "Successful insert";
+    $stmt->closeCursor();
+} catch (PDOException $e){
+    echo $e->getMessage();
+}
+
+$query = "SELECT * FROM lettori";
+
+try{
+    $stmt = $db->prepare($query);
+    $stmt->execute();
+    echo "<table>";
+    echo "<tr>";
+    echo "<th>ID</th>";
+    echo "<th>Nome</th>";
+    echo "<th>Cognome</th>";
+    echo "<th>Data iscrizione</th>";
+    echo "</tr>";
+    while ($user = $stmt->fetch()){
+        echo "<tr>";
+        echo "<td>" . $user->id . "</td>";
+        echo "<td>" . $user->nome . "</td>";
+        echo "<td>" . $user->cognome . "</td>";
+        echo "<td>" . $user->data_iscrizione . "</td>";
+        echo "<tr>";
     }
-    $users = file("userInfo.txt", FILE_IGNORE_NEW_LINES); //Ogni riga del txt diventa un elemento dell'array
+    echo "</table>";
+    $stmt->closeCursor();
+} catch (PDOException $e){
+    echo $e->getMessage();
+}
 ?>
+
 
 <!doctype html>
 <html lang="en">
@@ -30,25 +69,7 @@
     <title>DEBUG</title>
 </head>
 <body>
-    <table border="1">
-        <tr>
-            <th>Nome</th>
-            <th>Cognome</th>
-            <th>Numero</th>
-            <th>Data registrazione</th>
-        </tr>
-        <?php
-            for ($i = 0; $i < count($users); $i += 4) { //Iteriamo di 4 righe alla volta poiché ogni utente ha 4 righe di dati
-                echo "<tr>";
-                echo "<td>" . explode(": ", $users[$i])[1] . "</td>";
-                echo "<td>" . explode(": ", $users[$i+1])[1] . "</td>";
-                echo "<td>" . explode(": ", $users[$i+2])[1] . "</td>";
-                echo "<td>" . explode(": ", $users[$i+3])[1] . "</td>";
-                echo "</tr>";
-            }
-        ?>
-    </table>
-    <button id="returnButton">Ritorna alla pagina di registrazione</button>
+<button id="returnButton">Ritorna alla pagina di registrazione</button>
 </body>
-<script src = "script.js"></script>
+<script src="script.js"></script>
 </html>
