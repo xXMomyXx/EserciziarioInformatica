@@ -1,0 +1,12 @@
+body {
+    background-color: #08121f;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+.header{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+label{
+    color: azure;
+}
